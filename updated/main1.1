@@ -1,0 +1,42 @@
+CREATE OR REPLACE PROCEDURE MainProcedure
+IS
+  v_FromDate DATE := TO_DATE('2024-01-01', 'YYYY-MM-DD'); -- Example start date
+  v_ToDate DATE := TO_DATE('2024-12-31', 'YYYY-MM-DD');   -- Example end date
+  v_Result VARCHAR2(100);
+
+  -- Parameters for InsertNewDevice procedure
+  v_DeviceId VARCHAR2(50) := 'D001';
+  v_DeviceType NUMBER := 1;
+  v_SeriesNum NUMBER := 123;
+  v_VersionD NUMBER := 1;
+  v_Manufacturer VARCHAR2(50) := 'ManufacturerA';
+  v_PurchaseDate DATE := TO_DATE('2024-07-01', 'YYYY-MM-DD');
+  v_LastMaintenanceDate DATE := TO_DATE('2024-07-01', 'YYYY-MM-DD');
+  v_LocationD VARCHAR2(50) := 'LocationA';
+BEGIN
+  -- Call the mostDonations function
+  BEGIN
+    v_Result := mostDonations(v_FromDate, v_ToDate);
+    DBMS_OUTPUT.PUT_LINE('Result of mostDonations: ' || v_Result);
+  EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('An error occurred while calling mostDonations: ' || SQLERRM);
+  END;
+
+  -- Call the InsertNewDevice procedure
+  BEGIN
+    InsertNewDevice(
+      p_DeviceId           => v_DeviceId, 
+      p_DeviceType         => v_DeviceType, 
+      p_SeriesNum          => v_SeriesNum,
+      p_VersionD           => v_VersionD,
+      p_Manufacturer       => v_Manufacturer,
+      p_PurchaseDate       => v_PurchaseDate,
+      p_LastMaintenanceDate => v_LastMaintenanceDate,
+      p_LocationD          => v_LocationD
+    );
+  EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('An error occurred while calling InsertNewDevice: ' || SQLERRM);
+  END;
+END MainProcedure;
